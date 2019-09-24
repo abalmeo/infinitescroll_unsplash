@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import PropTypes from 'prop-types';
+import Image from './Image';
 
 const Images = props => {
   const [imageData, setImageData] = useState({
@@ -14,13 +14,25 @@ const Images = props => {
 
   useEffect(() => {
     axios
-      .get(`/api/photos?count=${count}&start=${start}`)
+      .get('https://reqres.in/api/users')
+      // .get(`/api/photos?count=${count}&start=${start}`)
       .then(res => setImageData({ images: res.data }));
+  }, []);
 
-    console.log('images', images);
-  });
-
-  return <div></div>;
+  return (
+    <div className="images">
+      <InfiniteScroll
+        dataLength={images.length}
+        // next=
+        // hasMore={true}
+        loader={<h3>Loading...</h3>}
+      >
+        {images.map((image, index) => (
+          <Image key={image.id + index} />
+        ))}
+      </InfiniteScroll>
+    </div>
+  );
 };
 
 Images.propTypes = {};

@@ -16,7 +16,7 @@ function App() {
                 </h1>
               </div>
 
-              <div className="images">
+              <div>
                 <Images />
               </div>
             </div>
