@@ -14,21 +14,28 @@ const Images = props => {
 
   useEffect(() => {
     axios
-      .get('https://reqres.in/api/users')
-      // .get(`/api/photos?count=${count}&start=${start}`)
-      .then(res => setImageData({ images: res.data }));
+      .get(`/api/photos?count=${count}&start=${start}`)
+      .then(res => setImageData({ images: images.concat(res.data) }));
   }, []);
 
+  const fetchImages = () => {
+    setImageData({ start: start + count });
+
+    axios
+      .get(`/api/photos?count=${count}&start=${start}`)
+      .then(res => setImageData({ images: res.data }));
+  };
+
   return (
-    <div className="images">
+    <div>
       <InfiniteScroll
-        dataLength={images.length}
-        // next=
-        // hasMore={true}
+        dataLength={images}
+        next={fetchImages}
+        hasMore={true}
         loader={<h3>Loading...</h3>}
       >
         {images.map((image, index) => (
-          <Image key={image.id + index} />
+          <Image key={image.id + index} image={image} />
         ))}
       </InfiniteScroll>
     </div>
